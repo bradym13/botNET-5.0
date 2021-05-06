@@ -6,7 +6,8 @@ const {
     MessageFactory,
     TeamsActivityHandler,
     CardFactory,
-    ActionTypes
+    ActionTypes,
+    ConsoleTranscriptLogger
 } = require('botbuilder');
 
 class BotActivityHandler extends TeamsActivityHandler {
@@ -24,9 +25,13 @@ class BotActivityHandler extends TeamsActivityHandler {
         // Registers an activity event handler for the message event, emitted for every incoming message activity.
         this.onMessage(async (context, next) => {
             TurnContext.removeRecipientMention(context.activity);
-            switch (context.activity.text.trim()) {
-            case 'Hello':
+            switch (context.activity.text.toLowerCase().trim()) {
+            case 'hello':
                 await this.mentionActivityAsync(context);
+                break;
+            case 'holidays':
+                var text = getHolidays();
+                await this.sendMessage(context, text);
                 break;
             default:
                 // By default for unknown activity sent by user show
@@ -65,7 +70,36 @@ class BotActivityHandler extends TeamsActivityHandler {
         
         await context.sendActivity(replyActivity);
     }
+
+    async sendMessage(context, text) {
+        const TextEncoder = require('html-entities').XmlEntities;
+
+        const mention = {
+            mentioned: context.activity.from,
+            text: text,
+            type: 'mention'
+        };
+
+        const replyActivity = MessageFactory.text(`${ mention.text }`);
+        replyActivity.entities = [mention];
+        await context.sendActivity(replyActivity);
+    }
 }
+
+
 
 module.exports.BotActivityHandler = BotActivityHandler;
 
+function getHolidays(){
+    holidays = ["Friday, January 1: New Year's Day",
+                "Monday, January 18: Martin Luther King Jr. Day",
+                "Monday, May 31: Memorial Day",
+                "Monday, July 5: Independence Day (observed)",
+                "Monday, September 6: Labor Day",
+                "Thursday, November 25: Thanksgiving Day",
+                "Friday, November 26: Day After Thanksgiving",
+                "Friday, December 24: Christmas Eve",
+                "Monday, December 27: Christmas Day (observed)",
+                "Friday, December 31: New Year's Eve"];
+    return holidays.join('\n\n');
+}
