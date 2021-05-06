@@ -33,6 +33,32 @@ class BotActivityHandler extends TeamsActivityHandler {
                 var text = getHolidays();
                 await this.sendMessage(context, text);
                 break;
+            case ('hr portal'):
+                var text = "https://medtronicprod.service-now.com/hr";
+                await this.sendMessage(context, text);
+                break;
+            case ('recognize'):
+                var text = "https://recognize.medtronic.com";
+                await this.sendMessage(context, text);
+                break;   
+            case ('azure'):
+                var text = "Azure DevOps: https://dev.azure.com \n\n Azure Portal: https://portal.azure.com";
+                await this.sendMessage(context, text);
+                break;
+            case ('benefits'):
+                var text = "Medtronic Benefits Page: https://www3.benefitsolver.com/benefits/BenefitSolverView \n\n"
+                            + "Fidelity NetBenefits: https://nb.fidelity.com/public/nb/default/home \n\n"
+                            + "MEAP: https://medtronicprod.service-now.com/hr?id=subpage&sysparm_id=MEAP \n\n"
+                            + "Healthier Together: https://landing.virginpulse.com/Medtronic/ \n\n"
+                            + "Privacy Armor: https://privacyarmor.infoarmor.com/signin/?partnerid=infoarmor";
+                await this.sendMessage(context, text);
+                break;
+            case ('resources'):
+                var text = "Plural Site: https://app.pluralsight.com/id/ \n\n"
+                            + "Acronym Finder: https://medtronic.sharepoint.com/sites/knowledgecenter/sitepages/acronymfinder.aspx# \n\n"
+                            + "Your Cause: https://medtronic.yourcause.com/#/home";
+                await this.sendMessage(context, text);
+                break;   
             default:
                 // By default for unknown activity sent by user show
                 // a card with the available actions.
